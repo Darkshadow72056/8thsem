@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor-Student Groups</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(120deg, #f0f4f8 60%, #e0e7ff 100%);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            padding: 32px 28px 28px 28px;
+        }
+
+        h2 {
+            color: #2d3a4a;
+            letter-spacing: 1px;
+            margin-bottom: 18px;
+        }
+
+        h3 {
+            color: #4e54c8;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .warning {
+            background: #ffeaea;
+            border: 2px solid #d32f2f;
+            color: #d32f2f;
+            font-weight: bold;
+            padding: 12px 18px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 1.08em;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: 600;
+            color: #3a3a3a;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 8px;
+            border: 1.5px solid #b3b3b3;
+            box-sizing: border-box;
+            font-size: 1em;
+            background: #f8faff;
+            transition: border 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus {
+            border: 1.5px solid #4e54c8;
+            outline: none;
+            background: #eef2ff;
+        }
+
+        button {
+            margin-top: 18px;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #4e54c8 60%, #8f94fb 100%);
+            color: white;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 2px 8px rgba(78, 84, 200, 0.08);
+        }
+
+        button:hover {
+            background: linear-gradient(90deg, #8f94fb 60%, #4e54c8 100%);
+        }
+
+        .message {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #1b8a3d;
+            font-size: 1.05em;
+        }
+
+        .error {
+            color: #d32f2f;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            background: #f8faff;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(78, 84, 200, 0.06);
+        }
+
+        th,
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e0e7ff;
+            text-align: left;
+            font-size: 1em;
+        }
+
+        th {
+            background: linear-gradient(90deg, #4e54c8 60%, #8f94fb 100%);
+            color: #fff;
+            font-weight: 600;
+            border-bottom: 2px solid #8f94fb;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .edit-btn,
+        .save-btn,
+        .cancel-btn {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.97em;
+            margin-left: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .edit-btn {
+            background: #ffb347;
+            color: #fff;
+        }
+
+        .edit-btn:hover {
+            background: #ff9800;
+        }
+
+        .save-btn {
+            background: #4caf50;
+            color: #fff;
+        }
+
+        .save-btn:hover {
+            background: #388e3c;
+        }
+
+        .cancel-btn {
+            background: #e57373;
+            color: #fff;
+        }
+
+        .cancel-btn:hover {
+            background: #c62828;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: #e53935;
+            font-size: 1.2em;
+            margin-left: 6px;
+            vertical-align: middle;
+            transition: color 0.2s;
+        }
+
+        .delete-btn:hover {
+            color: #b71c1c;
+        }
+
+        .teacher-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 8px;
+        }
+
+        .teacher-name {
+            font-size: 1.15em;
+            font-weight: 600;
+            color: #4e54c8;
+            margin: 0;
+            padding: 0 0 0 2px;
+            letter-spacing: 0.5px;
+            min-width: 220px;
+            word-break: break-all;
+        }
+
+        .wp-link-box {
+            display: flex;
+            align-items: center;
+            min-width: 200px;
+            gap: 6px;
+        }
+
+        .wp-link-box a.wp-link {
+            text-decoration: none;
+            color: #219150;
+            font-weight: 500;
+            background: #e8f5e9;
+            border-radius: 5px;
+            padding: 3px 10px 3px 6px;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: background 0.2s;
+        }
+
+        .wp-link-box a.wp-link:hover {
+            background: #b2dfdb;
+            color: #0d5d3c;
+        }
+
+        .wp-link-input {
+            padding: 6px;
+            border: 1px solid #b3b3b3;
+            border-radius: 4px;
+            width: 180px;
+            font-size: 0.95em;
+            margin-right: 4px;
+        }
+    </style>
+    <!-- Place this in your <head> before your own <script> -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+    <script>
+        // Your Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAqAZz8lUi5YnzxB9IZuKFHlNzk_pYOidM",
+            authDomain: "th-sem-46094.firebaseapp.com",
+            projectId: "th-sem-46094",
+            storageBucket: "th-sem-46094.appspot.com",
+            messagingSenderId: "395884037515",
+            appId: "1:395884037515:web:09842d2e20d79244f29b8e",
+            measurementId: "G-YK4XVNGDMX"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Save instructor data to Firestore
+        async function saveInstructor(instructorEmail, data) {
+            await db.collection("instructors").doc(instructorEmail).set(data);
+        }
+
+        // Load all instructors from Firestore
+        async function loadAllInstructors() {
+            const snapshot = await db.collection("instructors").get();
+            let result = {};
+            snapshot.forEach(doc => {
+                result[doc.id] = doc.data();
+            });
+            return result;
+        }
+
+        // Example: Add student (call this in your form submit handler)
+        async function addStudent(instructorEmail, studentObj) {
+            let doc = await db.collection("instructors").doc(instructorEmail).get();
+            let data = doc.exists ? doc.data() : { students: [], wpLink: "" };
+            // Prevent duplicate student email
+            if (data.students.some(s => s.studentEmail.toLowerCase() === studentObj.studentEmail.toLowerCase())) {
+                messageDiv.textContent = 'A student with this email already exists for this instructor.';
+                messageDiv.className = 'message error';
+                return;
+            }
+            data.students.push(studentObj);
+            await saveInstructor(instructorEmail, data);
+            await refreshUI();
+        }
+
+        // Example: Refresh UI from Firestore
+        async function refreshUI() {
+            instructors = await loadAllInstructors();
+            renderAllTables();
+        }
+
+        // On page load, load data from Firestore
+        refreshUI();
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="warning">
+            This is for our help purpose only. <br>
+            <b>Please do not misuse or tamper the data.</b>
+        </div>
+        <h2>
+            Assign Students to Instructors
+        </h2>
+        <form id="assignmentForm">
+            <label for="instructorEmail">Instructor Email:</label>
+            <input type="email" id="instructorEmail" required>
+
+            <label for="studentName">Student Name:</label>
+            <input type="text" id="studentName" required>
+
+            <label for="studentEmail">Student Email:</label>
+            <input type="email" id="studentEmail" required>
+
+            <label for="mobileNumber">Mobile Number:</label>
+            <input type="tel" id="mobileNumber" required pattern="[0-9]{10}" placeholder="10-digit number">
+
+            <button type="submit">Add Student</button>
+        </form>
+        <div class="message" id="message"></div>
+        <div id="tablesContainer"></div>
+    </div>
+    <script>
+        const form = document.getElementById('assignmentForm');
+        const messageDiv = document.getElementById('message');
+        const tablesContainer = document.getElementById('tablesContainer');
+
+        // Load instructors data from localStorage if available
+        let instructors = {};
+        if (localStorage.getItem('instructorsData')) {
+            try {
+                instructors = JSON.parse(localStorage.getItem('instructorsData'));
+            } catch (e) {
+                instructors = {};
+            }
+        }
+
+        // Helper to create table row with edit and delete option
+        function createStudentRow(student, instructorEmail, idx) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="studentName">${student.studentName}</td>
+                <td class="studentEmail">${student.studentEmail}</td>
+                <td class="mobileNumber">${student.mobileNumber}</td>
+                <td>
+                    <button class="edit-btn" data-instructor="${instructorEmail}" data-idx="${idx}">Edit</button>
+                    <button class="delete-btn" data-instructor="${instructorEmail}" data-idx="${idx}" title="Delete Student">🗑️</button>
+                </td>
+            `;
+            return row;
+        }
+
+        // Render table for an instructor
+        function renderTable(instructorEmail) {
+            const tbody = document.querySelector(`#table-${instructorEmail.replace(/[@.]/g, '-')} tbody`);
+            tbody.innerHTML = '';
+            instructors[instructorEmail].forEach((student, idx) => {
+                if (typeof student === 'object' && student.studentName) {
+                    const row = createStudentRow(student, instructorEmail, idx);
+                    tbody.appendChild(row);
+                }
+            });
+        }
+
+        // Render all tables from instructors object
+        function renderAllTables() {
+            tablesContainer.innerHTML = '';
+            Object.keys(instructors).forEach(instructorEmail => {
+                // WhatsApp link support
+                let wpLink = instructors[instructorEmail].wpLink || "";
+                const tableDiv = document.createElement('div');
+                tableDiv.id = `table-${instructorEmail.replace(/[@.]/g, '-')}`;
+                tableDiv.innerHTML = `
+                    <div class="teacher-header">
+                        <span class="teacher-name">${instructorEmail}</span>
+                        <span class="wp-link-box" data-instructor="${instructorEmail}">
+                            ${wpLink
+                        ? `<a href="${wpLink}" target="_blank" class="wp-link" title="Join WhatsApp Group">
+                                <span style="font-size:1.2em;">🟢</span> WhatsApp
+                            </a>
+                            <button class="edit-wp-btn" data-instructor="${instructorEmail}" title="Edit WhatsApp Link" style="margin-left:2px;">✏️</button>`
+                        : `<button class="add-wp-btn" data-instructor="${instructorEmail}" title="Add WhatsApp Link">➕ WhatsApp</button>`
+                    }
+                        </span>
+                        <button class="delete-btn delete-teacher-btn" data-instructor="${instructorEmail}" title="Delete Teacher">🗑️</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Student Email</th>
+                                <th>Mobile Number</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                `;
+                tablesContainer.appendChild(tableDiv);
+                renderTable(instructorEmail);
+            });
+        }
+
+        // Save instructors data to localStorage
+        function saveToLocal() {
+            localStorage.setItem('instructorsData', JSON.stringify(instructors));
+        }
+
+        // Handle edit/save/cancel/delete actions
+        tablesContainer.addEventListener('click', function (e) {
+            // Add WhatsApp link
+            if (e.target.classList.contains('add-wp-btn')) {
+                const instructorEmail = e.target.getAttribute('data-instructor');
+                const wpBox = e.target.closest('.wp-link-box');
+                wpBox.innerHTML = `
+                    <input type="url" class="wp-link-input" placeholder="Paste WhatsApp group link" style="width:180px;">
+                    <button class="save-wp-btn" data-instructor="${instructorEmail}">Save</button>
+                    <button class="cancel-wp-btn" data-instructor="${instructorEmail}">Cancel</button>
+                `;
+                return;
+            }
+            // Edit WhatsApp link
+            if (e.target.classList.contains('edit-wp-btn')) {
+                const instructorEmail = e.target.getAttribute('data-instructor');
+                const wpBox = e.target.closest('.wp-link-box');
+                const currentLink = instructors[instructorEmail].wpLink || "";
+                wpBox.innerHTML = `
+                    <input type="url" class="wp-link-input" value="${currentLink || ''}" placeholder="Paste WhatsApp group link" style="width:180px;">
+                    <button class="save-wp-btn" data-instructor="${instructorEmail}">Save</button>
+                    <button class="cancel-wp-btn" data-instructor="${instructorEmail}">Cancel</button>
+                `;
+                return;
+            }
+            // Save WhatsApp link
+            if (e.target.classList.contains('save-wp-btn')) {
+                const instructorEmail = e.target.getAttribute('data-instructor');
+                const wpBox = e.target.closest('.wp-link-box');
+                const input = wpBox.querySelector('.wp-link-input');
+                const link = input.value.trim();
+                // Allow all types of links for now (no validation)
+                instructors[instructorEmail].wpLink = link;
+                saveToLocal();
+                renderAllTables();
+                messageDiv.textContent = link ? 'WhatsApp group link saved!' : 'WhatsApp group link removed!';
+                messageDiv.className = 'message';
+                return;
+            }
+            // Cancel WhatsApp link add/edit
+            if (e.target.classList.contains('cancel-wp-btn')) {
+                renderAllTables();
+                messageDiv.textContent = '';
+                return;
+            }
+            // Student delete
+            if (e.target.classList.contains('delete-btn') && e.target.title === "Delete Student") {
+                const instructorEmail = e.target.getAttribute('data-instructor');
+                const idx = e.target.getAttribute('data-idx');
+                if (confirm("Are you sure you want to delete this student?") && confirm("Please confirm again to delete this student.")) {
+                    instructors[instructorEmail].splice(idx, 1);
+                    if (instructors[instructorEmail].filter(s => typeof s === 'object' && s.studentName).length === 0) {
+                        delete instructors[instructorEmail];
+                    }
+                    saveToLocal();
+                    renderAllTables();
+                    messageDiv.textContent = 'Student deleted!';
+                    messageDiv.className = 'message';
+                }
+                return;
+            }
+            // Teacher delete
+            if (e.target.classList.contains('delete-teacher-btn')) {
+                const instructorEmail = e.target.getAttribute('data-instructor');
+                if (confirm("Please confirm again to delete this teacher and all their students.")) {
+                    delete instructors[instructorEmail];
+                    saveToLocal();
+                    renderAllTables();
+                    messageDiv.textContent = 'Teacher and all their students deleted!';
+                    messageDiv.className = 'message';
+                }
+                return;
+            }
+            if (e.target.classList.contains('edit-btn')) {
+                const instructorEmail = e.target.getAttribute('data-instructor');
+                const idx = e.target.getAttribute('data-idx');
+                const row = e.target.closest('tr');
+                const student = instructors[instructorEmail][idx];
+
+                // Replace cells with input fields
+                row.innerHTML = `
+                    <td><input type="text" value="${student.studentName}" class="edit-name" style="width:90%"></td>
+                    <td><input type="email" value="${student.studentEmail}" class="edit-email" style="width:90%"></td>
+                    <td><input type="tel" value="${student.mobileNumber}" class="edit-mobile" style="width:90%" pattern="[0-9]{10}"></td>
+                    <td>
+                        <button class="save-btn" data-instructor="${instructorEmail}" data-idx="${idx}">Save</button>
+                        <button class="cancel-btn" data-instructor="${instructorEmail}" data-idx="${idx}">Cancel</button>
+                    </td>
+                `;
+            }
+            else if (e.target.classList.contains('save-btn')) {
+                const instructorEmail = e.target.getAttribute('data-instructor');
+                const idx = e.target.getAttribute('data-idx');
+                const row = e.target.closest('tr');
+                const newName = row.querySelector('.edit-name').value.trim();
+                const newEmail = row.querySelector('.edit-email').value.trim();
+                const newMobile = row.querySelector('.edit-mobile').value.trim();
+
+                if (!newName || !newEmail || !/^\d{10}$/.test(newMobile)) {
+                    messageDiv.textContent = 'Please enter valid data for editing.';
+                    messageDiv.className = 'message error';
+                    return;
+                }
+
+                // Check for duplicate student email in the same instructor
+                const duplicate = instructors[instructorEmail].some((student, i) => i != idx && student.studentEmail && student.studentEmail.toLowerCase() === newEmail.toLowerCase());
+                if (duplicate) {
+                    messageDiv.textContent = 'A student with this email already exists for this instructor.';
+                    messageDiv.className = 'message error';
+                    return;
+                }
+
+                instructors[instructorEmail][idx] = { studentName: newName, studentEmail: newEmail, mobileNumber: newMobile };
+                saveToLocal();
+                renderTable(instructorEmail);
+                messageDiv.textContent = 'Student data updated!';
+                messageDiv.className = 'message';
+            }
+            else if (e.target.classList.contains('cancel-btn')) {
+                const instructorEmail = e.target.getAttribute('data-instructor');
+                renderTable(instructorEmail);
+                messageDiv.textContent = '';
+            }
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const instructorEmail = document.getElementById('instructorEmail').value.trim();
+            const studentName = document.getElementById('studentName').value.trim();
+            const studentEmail = document.getElementById('studentEmail').value.trim();
+            const mobileNumber = document.getElementById('mobileNumber').value.trim();
+
+            if (!instructorEmail || !studentName || !studentEmail || !mobileNumber) {
+                messageDiv.textContent = 'Please fill all fields correctly.';
+                messageDiv.className = 'message error';
+                return;
+            }
+
+            // Check for duplicate student email in the same instructor
+            if (instructors[instructorEmail] && instructors[instructorEmail].some(student => student.studentEmail && student.studentEmail.toLowerCase() === studentEmail.toLowerCase())) {
+                messageDiv.textContent = 'A student with this email already exists for this instructor.';
+                messageDiv.className = 'message error';
+                return;
+            }
+
+            if (!instructors[instructorEmail]) {
+                instructors[instructorEmail] = [];
+            }
+
+            // Add student to instructor's list
+            instructors[instructorEmail].push({ studentName, studentEmail, mobileNumber });
+
+            // Save to localStorage
+            saveToLocal();
+
+            // Render all tables from localStorage
+            renderAllTables();
+
+            messageDiv.textContent = 'Student added successfully!';
+            messageDiv.className = 'message';
+
+            form.reset();
+        });
+
+        // On page load, render all tables from localStorage
+        renderAllTables();
+    </script>
+</body>
+
+</html>
